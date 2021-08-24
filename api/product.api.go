@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 	"main/db"
-	_"main/interceptor"
+	"main/interceptor"
 	"main/model"
 	"mime/multipart"
 	"net/http"
@@ -19,7 +19,7 @@ import (
 func SetupProductAPI(router *gin.Engine) {
 	productAPI := router.Group("/api/v2")
 	{
-		productAPI.GET("/product" /*interceptor.JwtVerify,*/, getProduct)
+		productAPI.GET("/product" ,interceptor.JwtVerify, getProduct)
 		productAPI.GET("/product/:id" /*interceptor.JwtVerify,*/, getProductByID)
 		productAPI.POST("/product" /*interceptor.JwtVerify,*/, createProduct)
 		productAPI.PUT("/product" /*interceptor.JwtVerify,*/, editProduct)
