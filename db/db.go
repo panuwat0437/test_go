@@ -3,7 +3,7 @@ package db
 import (
 	"main/model"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -18,11 +18,11 @@ func GetDB() *gorm.DB {
 func SetupDB() {
 
 	// sqlite "gorm.io/driver/sqlite"
-	database, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
+	// database, err := gorm.Open(sqlite.Open("database.db"), &gorm.Config{})
 
 	// mysql "gorm.io/driver/mysql"
-	// dsn := "root:root@tcp(127.0.0.1:8888)/hong_member?charset=utf8&parseTime=True&loc=Local"
-	// database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	dsn := "root:123456789@tcp(localhost:3307)/testdev?charset=utf8mb4&parseTime=True&loc=Local"
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	// postgresql 	"gorm.io/driver/postgres"
 	// dsn := "user=postgres password=12341234 dbname=cmgostock port=5432 sslmode=disable TimeZone=Asia/Bangkok"
@@ -32,9 +32,9 @@ func SetupDB() {
 		panic("failed to connect database")
 	}
 
-	// database.AutoMigrate(&model.User{})
-	// database.AutoMigrate(&model.Product{})
-	// database.AutoMigrate(&model.Transaction{})
+	database.AutoMigrate(&model.User{})
+	database.AutoMigrate(&model.Product{})
+	database.AutoMigrate(&model.Transaction{})
 	database.AutoMigrate(&model.Member{})
 
 	db = database

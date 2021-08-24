@@ -41,15 +41,20 @@ func JwtVerify(c *gin.Context) {
 	})
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println(claims)	
+		fmt.Println(claims)
 
 		staffID := fmt.Sprintf("%v", claims["id"])
-		username := fmt.Sprintf("%v", claims["jwt_username"])
-		level := fmt.Sprintf("%v", claims["jwt_level"])
+		username := fmt.Sprintf("%v", claims["username"])
+		level := fmt.Sprintf("%v", claims["level"])
 		c.Set("jwt_staff_id", staffID)
 		c.Set("jwt_username", username)
 		c.Set("jwt_level", level)
 
+		if level != "admin" {
+			c.JSON(http.StatusOK, gin.H{"result": "nok", "message": "No permission", "error": err})
+			c.Abort()
+			return
+		}
 
 		c.Next()
 	} else {
